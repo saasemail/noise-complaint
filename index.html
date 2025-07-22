@@ -24,12 +24,12 @@
     }
   </script>
 
-  <!-- Poppins Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style> body { font-family: 'Poppins', sans-serif; } </style>
 
-  <!-- AOS -->
-  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet"/>
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
   <!-- Feather Icons -->
@@ -40,7 +40,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden
-               bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-cover">
+               bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
 
   <!-- Tamni overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
@@ -60,10 +60,10 @@
     });
   </script>
 
-  <!-- Kartica -->
+  <!-- Card Container -->
   <div class="relative w-full max-w-lg z-10">
 
-    <!-- Azurni krug -->
+    <!-- Azurni krug iza kartice -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
     <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
@@ -84,7 +84,7 @@
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Forma -->
+        <!-- Forma (tone only) -->
         <form id="complaintForm" class="space-y-4">
           <div class="relative">
             <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <!-- Pro -->
+        <!-- Pro Version -->
         <div class="pt-6 text-center border-t border-gray-200">
           <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">
             🚀 Upgrade to Pro (full customization)
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <!-- JS -->
+  <!-- JS Logic -->
   <script>
     feather.replace();
     AOS.init({ duration: 800, once: true });
