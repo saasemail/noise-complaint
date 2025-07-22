@@ -7,113 +7,112 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- Google Font: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
-
+  <style> body { font-family: 'Inter', sans-serif; } </style>
   <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-blue-50 via-white to-blue-50 min-h-screen p-4 flex flex-col items-center">
 
-  <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden">
-    <!-- Header with gradient -->
-    <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center gap-3">
-      <i data-feather="volume-x" class="w-6 h-6 text-white"></i>
-      <h1 class="text-2xl font-bold text-white">Anonymous Noise Complaint</h1>
-    </div>
+  <!-- Objašnjenje -->
+  <div class="max-w-2xl text-center mb-6 px-4 text-gray-700">
+    <p class="text-lg">
+      Create and share an anonymous noise complaint in seconds.  
+      Select a tone — Polite, Neutral, or Aggressive — and preview your message.  
+      No names, no addresses. Upgrade to Pro for full customization.
+    </p>
+  </div>
 
-    <div class="p-6 space-y-6">
-      <!-- Form -->
-      <form id="complaintForm" class="space-y-4">
-        <div class="relative">
-          <textarea id="description" placeholder="Describe the noise issue..." 
-            class="w-full p-4 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" rows="4" required></textarea>
-          <i data-feather="message-circle" class="absolute right-4 top-4 w-5 h-5 text-gray-400"></i>
-        </div>
-        <div class="relative">
-          <select id="tone" class="w-full p-4 pr-12 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
-            <option value="" disabled selected>Select tone</option>
-            <option value="polite">Polite</option>
-            <option value="neutral">Neutral</option>
-            <option value="aggressive">Aggressive</option>
-          </select>
-          <i data-feather="sliders" class="absolute right-4 top-4 w-5 h-5 text-gray-400"></i>
-        </div>
-        <button type="button" id="previewBtn"
-          class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
-          Preview Complaint
-        </button>
-      </form>
+  <div class="relative w-full max-w-xl">
 
-      <!-- Preview -->
-      <div id="previewBox" class="hidden p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
-        <h2 class="text-lg font-semibold text-gray-700 mb-2">Preview:</h2>
-        <p id="previewText" class="text-gray-800 italic whitespace-pre-line"></p>
+    <!-- Dekorativni plavi krug iza kartice -->
+    <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-blue-400 opacity-20 rounded-full blur-3xl"></div>
+
+    <!-- Glavna kartica -->
+    <div class="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+      <!-- Header sa ikonicom i centriranim naslovom -->
+      <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
+        <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
+        <h1 class="text-2xl font-bold text-white text-center">Anonymous Noise Complaint</h1>
       </div>
 
-      <!-- Link Generation (coming soon) -->
-      <div id="linkSection" class="hidden space-y-3">
-        <button id="generateLinkBtn"
-          class="w-full py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition">
-          Generate Link
-        </button>
-
-        <div class="flex items-center justify-between bg-gray-100 p-3 rounded-lg">
-          <span id="linkText" class="text-sm text-gray-700 truncate">https://app.link/your-complaint</span>
-          <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
-            <i data-feather="copy" class="w-4 h-4"></i> Copy
+      <div class="p-6 space-y-6">
+        <!-- Osnovna forma: samo izbor tona -->
+        <form id="complaintForm" class="space-y-4">
+          <div class="relative">
+            <select id="tone" class="w-full p-4 pr-12 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
+              <option value="" disabled selected>Select tone</option>
+              <option value="polite">Polite</option>
+              <option value="neutral">Neutral</option>
+              <option value="aggressive">Aggressive</option>
+            </select>
+            <i data-feather="sliders" class="absolute right-4 top-4 w-5 h-5 text-gray-400"></i>
+          </div>
+          <button type="button" id="previewBtn"
+            class="w-full mt-2 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
+            Preview Complaint
           </button>
+        </form>
+
+        <!-- Preview sekcija -->
+        <div id="previewBox" class="hidden p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-700 mb-2">Preview:</h2>
+          <p id="previewText" class="text-gray-800 italic whitespace-pre-line"></p>
         </div>
 
-        <div class="flex justify-center gap-6 text-gray-600 pt-2">
-          <i data-feather="message-circle" class="w-6 h-6 cursor-pointer hover:text-blue-600"></i>
-          <i data-feather="send" class="w-6 h-6 cursor-pointer hover:text-green-600"></i>
-          <i data-feather="instagram" class="w-6 h-6 cursor-pointer hover:text-pink-500"></i>
-          <i data-feather="facebook" class="w-6 h-6 cursor-pointer hover:text-blue-800"></i>
+        <!-- Link Generation (dolazi kasnije) -->
+        <div id="linkSection" class="hidden space-y-3">
+          <button id="generateLinkBtn"
+            class="w-full py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition">
+            Generate Link
+          </button>
+          <div class="flex items-center justify-between bg-gray-100 p-3 rounded-lg">
+            <span id="linkText" class="text-sm text-gray-700 truncate">https://app.link/your-complaint</span>
+            <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
+              <i data-feather="copy" class="w-4 h-4"></i> Copy
+            </button>
+          </div>
+          <div class="flex justify-center gap-6 text-gray-600 pt-2">
+            <i data-feather="message-circle" class="w-6 h-6 cursor-pointer hover:text-blue-600"></i>
+            <i data-feather="send" class="w-6 h-6 cursor-pointer hover:text-green-600"></i>
+            <i data-feather="instagram" class="w-6 h-6 cursor-pointer hover:text-pink-500"></i>
+            <i data-feather="facebook" class="w-6 h-6 cursor-pointer hover:text-blue-800"></i>
+          </div>
         </div>
-      </div>
 
-      <!-- Pro version -->
-      <div class="pt-6 text-center border-t border-gray-200">
-        <a href="/pro" class="text-sm text-gray-500 hover:text-gray-700 underline">
-          🚀 Upgrade to Pro (more features)
-        </a>
+        <!-- Upgrade na Pro -->
+        <div class="pt-6 text-center border-t border-gray-200">
+          <a href="/pro" class="text-sm text-gray-500 hover:text-gray-700 underline">
+            🚀 Upgrade to Pro (full customization)
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- JS logika -->
   <script>
     feather.replace();
-
     const previewBtn = document.getElementById('previewBtn');
     const previewBox = document.getElementById('previewBox');
     const previewText = document.getElementById('previewText');
-    const form = document.getElementById('complaintForm');
 
     previewBtn.addEventListener('click', () => {
-      const description = document.getElementById('description').value.trim();
       const tone = document.getElementById('tone').value;
-
-      if (!description || !tone) {
-        alert('Please describe the issue and select a tone.');
+      if (!tone) {
+        alert('Please select a tone.');
         return;
       }
-
       let complaint = '';
       if (tone === 'polite') {
-        complaint = `Dear neighbor,\n\nJust a kind note to let you know that there has been some noise recently: ${description}.\n\nWe’d greatly appreciate your attention to this. Thank you.`;
+        complaint = `Dear neighbor,\n\nThis is a friendly reminder about noise levels in our area. Please consider keeping the noise down.\n\nThank you for your cooperation.`;
       } else if (tone === 'neutral') {
-        complaint = `Hello,\n\nThere is an ongoing noise issue: ${description}.\nPlease take necessary action to resolve it.`;
+        complaint = `Hello,\n\nThere has been a noise issue recently. Please address it at your earliest convenience.`;
       } else {
-        complaint = `Enough is enough.\n${description}.\nThis needs to stop – immediately.`;
+        complaint = `Attention!\n\nNoise in this area is unacceptable. Stop immediately.`;
       }
-
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
       previewBox.scrollIntoView({ behavior: 'smooth' });
