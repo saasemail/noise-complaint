@@ -8,14 +8,16 @@
   <!-- Tailwind CSS + Custom Animation Plugin -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Enable backdrop-filter
-    tailwind.config = {      
+    tailwind.config = {
       theme: {
         extend: {
           backdropBlur: { xs: '2px' },
           animation: { fadeIn: 'fadeIn 0.8s ease-out' },
           keyframes: {
-            fadeIn: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } }
+            fadeIn: {
+              '0%': { opacity: 0, transform: 'translateY(10px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
           }
         }
       }
@@ -24,9 +26,7 @@
 
   <!-- Google Font: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-  </style>
+  <style> body { font-family: 'Poppins', sans-serif; } </style>
 
   <!-- AOS Animations -->
   <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
@@ -34,14 +34,33 @@
 
   <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
 </head>
-<body class="bg-gradient-to-br from-sky-100 via-sky-50 to-sky-100 min-h-screen flex items-center justify-center p-6">
+<body class="relative bg-gradient-to-br from-sky-300 via-sky-200 to-sky-300 min-h-screen flex items-center justify-center p-6 overflow-hidden">
+
+  <!-- tsParticles canvas -->
+  <div id="tsparticles" class="absolute inset-0 z-0"></div>
+  <script>
+    tsParticles.load("tsparticles", {
+      fullScreen: { enable: true, zIndex: 0 },
+      particles: {
+        number: { value: 60 },
+        color: { value: "#38BDF8" },
+        opacity: { value: 0.25 },
+        size: { value: { min: 1, max: 4 } },
+        move: { enable: true, speed: 0.6, direction: "none", outModes: "out" }
+      }
+    });
+  </script>
 
   <!-- Card Container -->
-  <div class="relative w-full max-w-lg">
+  <div class="relative w-full max-w-lg z-10">
 
     <!-- Dekorativni azurno-plavi krug iza kartice -->
-    <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-300 opacity-30 rounded-full blur-3xl"></div>
+    <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
     <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
 
@@ -142,6 +161,5 @@
       previewBox.scrollIntoView({ behavior: 'smooth' });
     });
   </script>
-
 </body>
 </html>
