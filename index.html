@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anonymous Noise Complaint</title>
 
-  <!-- Tailwind CSS + Custom Config -->
+  <!-- Tailwind + config -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,28 +24,31 @@
     }
   </script>
 
-  <!-- Google Font: Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style> body { font-family: 'Poppins', sans-serif; } </style>
 
-  <!-- AOS Animations -->
-  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet"/>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
-  <!-- Feather Icons -->
+  <!-- Feather icons -->
   <script src="https://unpkg.com/feather-icons"></script>
 
   <!-- tsParticles -->
   <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine"></script>
   <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
+
+  <!-- LZ-String for compression -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden
                bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
 
-  <!-- Tamni overlay -->
+  <!-- Dark overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
 
-  <!-- tsParticles canvas -->
+  <!-- tsParticles -->
   <div id="tsparticles" class="absolute inset-0 z-0"></div>
   <script>
     tsParticles.load("tsparticles", {
@@ -60,10 +63,10 @@
     });
   </script>
 
-  <!-- Card Container -->
+  <!-- Card -->
   <div class="relative w-full max-w-lg z-10">
 
-    <!-- Azurni krug iza kartice -->
+    <!-- Azurno-plavi krug -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
     <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
@@ -77,14 +80,14 @@
       <!-- Body -->
       <div class="p-6 space-y-6">
 
-        <!-- Uputstvo -->
+        <!-- Description -->
         <p class="text-center text-gray-100 mb-4">
           Create and share an anonymous noise complaint in seconds.<br/>
           Select a tone and preview your message—no names or addresses needed.<br/>
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Forma (tone only) -->
+        <!-- Tone Picker -->
         <form id="complaintForm" class="space-y-4">
           <div class="relative">
             <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
@@ -107,32 +110,34 @@
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Share (uskoro) -->
+        <!-- Generate & Share -->
         <div id="linkSection" class="hidden space-y-4">
           <button id="generateLinkBtn"
             class="w-full py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold rounded-xl shadow hover:scale-[1.02] active:scale-[0.98] focus:ring-4 focus:ring-green-300 transition">
             Generate Link
           </button>
+
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
-            <span id="linkText" class="text-sm text-gray-800 truncate">https://app.link/your-complaint</span>
+            <span id="linkText" class="text-sm text-gray-800 truncate">Loading...</span>
             <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
               <i data-feather="copy" class="w-4 h-4"></i> Copy
             </button>
           </div>
+
           <div class="flex justify-center gap-6 text-gray-600 pt-2">
-            <i data-feather="message-circle" class="w-6 h-6 cursor-pointer hover:text-blue-600"></i>
-            <i data-feather="send" class="w-6 h-6 cursor-pointer hover:text-green-600"></i>
-            <i data-feather="instagram" class="w-6 h-6 cursor-pointer hover:text-pink-500"></i>
-            <i data-feather="facebook" class="w-6 h-6 cursor-pointer hover:text-blue-800"></i>
+            <i data-feather="message-circle" class="w-6 h-6 cursor-pointer share-whatsapp hover:text-blue-600"></i>
+            <i data-feather="send" class="w-6 h-6 cursor-pointer share-sms hover:text-green-600"></i>
+            <i data-feather="facebook" class="w-6 h-6 cursor-pointer share-fb hover:text-blue-800"></i>
           </div>
         </div>
 
-        <!-- Pro Version -->
+        <!-- Pro CTA -->
         <div class="pt-6 text-center border-t border-gray-200">
           <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">
             🚀 Upgrade to Pro (full customization)
           </a>
         </div>
+
       </div>
     </div>
   </div>
@@ -142,28 +147,82 @@
     feather.replace();
     AOS.init({ duration: 800, once: true });
 
+    // Elements
     const previewBtn = document.getElementById('previewBtn');
     const previewBox = document.getElementById('previewBox');
     const previewText = document.getElementById('previewText');
     const toneEl = document.getElementById('tone');
+    const linkSection = document.getElementById('linkSection');
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const linkText = document.getElementById('linkText');
+    const copyBtn = document.getElementById('copyBtn');
+    const shareWhatsapp = document.querySelector('.share-whatsapp');
+    const shareSms = document.querySelector('.share-sms');
+    const shareFb = document.querySelector('.share-fb');
 
+    let currentComplaint = '';
+
+    // Preview
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value;
       if (!tone) {
         alert('Please select a tone.');
         return;
       }
-      let complaint = '';
       if (tone === 'polite') {
-        complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
+        currentComplaint = `Friendly reminder: Please keep the noise down.`;
       } else if (tone === 'neutral') {
-        complaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
+        currentComplaint = `Notice: There has been excessive noise. Please address it.`;
       } else {
-        complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+        currentComplaint = `Attention! Noise levels are unacceptable. Stop immediately!`;
       }
-      previewText.textContent = complaint;
+      previewText.textContent = currentComplaint;
       previewBox.classList.remove('hidden');
+      linkSection.classList.add('hidden');
       previewBox.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Generate link
+    generateLinkBtn.addEventListener('click', () => {
+      const compressed = LZString.compressToEncodedURIComponent(currentComplaint);
+      const url = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
+      linkText.textContent = url;
+      linkSection.classList.remove('hidden');
+    });
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(linkText.textContent).then(() => {
+        alert('Link copied to clipboard!');
+      });
+    });
+
+    // Share handlers
+    shareWhatsapp.addEventListener('click', () => {
+      const text = encodeURIComponent(linkText.textContent);
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    });
+    shareSms.addEventListener('click', () => {
+      const body = encodeURIComponent(linkText.textContent);
+      window.location.href = `sms:?body=${body}`;
+    });
+    shareFb.addEventListener('click', () => {
+      const u = encodeURIComponent(linkText.textContent);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${u}`, '_blank');
+    });
+
+    // On load: check for hash and show complaint
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.match(/c=(.*)$/);
+      if (hash) {
+        try {
+          const decoded = LZString.decompressFromEncodedURIComponent(hash[1]);
+          previewText.textContent = decoded;
+          previewBox.classList.remove('hidden');
+          linkSection.classList.remove('hidden');
+          linkText.textContent = window.location.href;
+        } catch {}
+      }
     });
   </script>
 </body>
