@@ -24,7 +24,7 @@
     }
   </script>
 
-  <!-- Google Font: Poppins -->
+  <!-- Poppins font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style> body { font-family: 'Poppins', sans-serif; } </style>
 
@@ -39,7 +39,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine"></script>
   <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
 
-  <!-- LZ-String for compression -->
+  <!-- LZ‑String for compression -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden
@@ -69,10 +69,10 @@
     <!-- Azure circle -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
-    <div id="card" data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
+    <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
 
       <!-- Header -->
-      <div id="header" class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
+      <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
         <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
         <h1 class="text-3xl font-bold text-white text-center">Anonymous Noise Complaint</h1>
       </div>
@@ -87,7 +87,7 @@
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Form Section -->
+        <!-- Form -->
         <div id="formSection" class="space-y-4">
           <form id="complaintForm" class="space-y-4">
             <div class="relative">
@@ -106,13 +106,13 @@
           </form>
         </div>
 
-        <!-- Preview Section -->
+        <!-- Preview -->
         <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
           <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Share Section -->
+        <!-- Link & Copy -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
@@ -132,7 +132,7 @@
     </div>
   </div>
 
-  <!-- JavaScript Logic -->
+  <!-- JS Logic -->
   <script>
     feather.replace();
     AOS.init({ duration: 800, once: true });
@@ -142,8 +142,8 @@
     const previewText = document.getElementById('previewText');
     const toneEl      = document.getElementById('tone');
     const formSection = document.getElementById('formSection');
-    const linkSection = document.getElementById('linkSection');
     const proCTA      = document.getElementById('proCTA');
+    const linkSection = document.getElementById('linkSection');
     const linkText    = document.getElementById('linkText');
     const copyBtn     = document.getElementById('copyBtn');
 
@@ -152,21 +152,22 @@
       return window.location.hash.includes('c=');
     }
 
-    // On page load
+    // On page load: preview-only behavior
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
-        formSection.style.display = 'none';
-        proCTA.style.display      = 'none';
+        formSection.classList.add('hidden');
+        proCTA.classList.add('hidden');
 
-        // Decompress and show preview only
-        const match   = window.location.hash.match(/c=(.*)$/);
+        const match = window.location.hash.match(/c=(.*)$/);
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
         previewBox.classList.remove('hidden');
+        linkSection.classList.remove('hidden');
+        linkText.textContent = window.location.href;
       }
     });
 
-    // Preview + auto-generate short link
+    // Preview + auto‑generate short link
     previewBtn.addEventListener('click', () => {
       if (isPreviewOnly()) return;
 
@@ -175,34 +176,32 @@
         alert('Please select a tone.');
         return;
       }
-      let complaint = '';
-      if (tone === 'polite') {
-        complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
-      } else if (tone === 'neutral') {
-        complaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
-      } else {
-        complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
-      }
 
-      // Show preview
+      // build complaint
+      let complaint = tone === 'polite'
+        ? `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`
+        : tone === 'neutral'
+          ? `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`
+          : `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+
+      // show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Show & reset linkSection
-      linkSection.style.display = '';
+      // show link section
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
-      // Build and shorten
+      // compress + shorten
       const compressed = LZString.compressToEncodedURIComponent(complaint);
-      const longUrl    = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
+      const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
         .then(r => r.text())
         .then(shortUrl => linkText.textContent = shortUrl)
         .catch(() => linkText.textContent = longUrl);
     });
 
-    // Copy link
+    // copy handler
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(linkText.textContent).then(() => {
         alert('Link copied to clipboard!');
