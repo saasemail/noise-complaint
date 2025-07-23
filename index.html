@@ -43,6 +43,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
+
   <!-- Dark overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
   <!-- tsParticles canvas -->
@@ -96,12 +97,8 @@
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/90 backdrop-blur-sm p-4 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
-            <button id="copyBtn" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm">
-              <i data-feather="copy" class="w-5 h-5"></i> Copy
-            </button>
-            <button id="shareBtn" class="flex items-center gap-2 text-green-600 hover:text-green-800 text-sm">
-              <i data-feather="share-2" class="w-5 h-5"></i> Share
-            </button>
+            <button id="copyBtn" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm"><i data-feather="copy" class="w-5 h-5"></i> Copy</button>
+            <button id="shareBtn" class="flex items-center gap-2 text-green-600 hover:text-green-800 text-sm"><i data-feather="share-2" class="w-5 h-5"></i> Share</button>
           </div>
         </div>
         <!-- Pro CTA -->
@@ -112,9 +109,9 @@
     </div>
   </div>
 
-  <!-- Share Bottom Sheet -->
-  <div id="shareSheet" class="fixed inset-x-0 bottom-0 h-1/2 bg-white/95 backdrop-blur-md rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 z-20">
-    <!-- Drag handle -->
+  <!-- Share Sheet -->
+  <div id="shareSheet" class="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-md rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 z-20 overflow-auto" style="max-height:65vh;">
+    <!-- Handle -->
     <div class="flex justify-center mt-2">
       <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
     </div>
@@ -123,42 +120,42 @@
       <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-5 h-5"></i></button>
     </div>
     <div class="grid grid-cols-4 gap-6 p-6 text-center">
-      <!-- Improved icons: using feather icons with colored backgrounds -->
+      <!-- Modern realistic icons via feather + color backgrounds -->
       <button id="whatsapp" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-md"><i data-feather="message-square" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">WhatsApp</span>
+        <div class="w-14 h-14 bg-green-500 rounded-lg flex items-center justify-center shadow-md"><i data-feather="message-square" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">WhatsApp</span>
       </button>
       <button id="viber" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center shadow-md"><i data-feather="phone" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Viber</span>
+        <div class="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="phone" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">Viber</span>
       </button>
       <button id="telegram" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center shadow-md"><i data-feather="send" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Telegram</span>
+        <div class="w-14 h-14 bg-blue-400 rounded-lg flex items-center justify-center shadow-md"><i data-feather="send" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">Telegram</span>
       </button>
       <button id="sms" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center shadow-md"><i data-feather="message-circle" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">SMS</span>
+        <div class="w-14 h-14 bg-gray-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="message-circle" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">SMS</span>
       </button>
       <button id="email" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center shadow-md"><i data-feather="mail" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Email</span>
+        <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="mail" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">Email</span>
       </button>
       <button id="facebook" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center shadow-md"><i data-feather="facebook" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Facebook</span>
+        <div class="w-14 h-14 bg-blue-700 rounded-lg flex items-center justify-center shadow-md"><i data-feather="facebook" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">Facebook</span>
       </button>
-      <button id="twitter" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center shadow-md"><i data-feather="twitter" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Twitter</span>
+      <button id="x" class="flex flex-col items-center">
+        <div class="w-14 h-14 bg-black rounded-lg flex items-center justify-center shadow-md"><i data-feather="x" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">X</span>
       </button>
       <button id="linkedin" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-md"><i data-feather="linkedin" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">LinkedIn</span>
+        <div class="w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="linkedin" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">LinkedIn</span>
       </button>
       <button id="mailru" class="flex flex-col items-center">
-        <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center shadow-md"><i data-feather="mail" class="w-6 h-6 text-white"></i></div>
-        <span class="mt-2 text-sm">Mail.ru</span>
+        <div class="w-14 h-14 bg-yellow-500 rounded-lg flex items-center justify-center shadow-md"><i data-feather="mail" class="w-7 h-7 text-white"></i></div>
+        <span class="mt-2 text-sm font-medium">Mail.ru</span>
       </button>
     </div>
   </div>
@@ -220,7 +217,7 @@
       sms: () => window.location.href = `sms:?body=${encodeURIComponent(linkText.textContent)}`,
       email: () => window.location.href = `mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`,
       facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      twitter: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      x: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
       linkedin: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
       mailru: () => window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`, '_blank')
     };
