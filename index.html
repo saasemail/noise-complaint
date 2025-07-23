@@ -5,169 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anonymous Noise Complaint</title>
 
-  <!-- Tailwind CSS + Custom Config -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          backdropBlur: { xs: '2px' },
-          animation: { fadeIn: 'fadeIn 0.8s ease-out' },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: 0, transform: 'translateY(10px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          }
-        }
-      }
-    }
+    tailwind.config = { theme: { extend: {
+      backdropBlur: { xs: '2px' },
+      animation: { fadeIn: 'fadeIn 0.8s ease-out' },
+      keyframes: { fadeIn: { '0%': { opacity:0, transform:'translateY(10px)' }, '100%': { opacity:1, transform:'translateY(0)' } } }
+    } }}
   </script>
 
-  <!-- Poppins font -->
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style> body { font-family: 'Poppins', sans-serif; } </style>
-
-  <!-- AOS Animations -->
+  <script src="https://unpkg.com/feather-icons"></script>
   <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet"/>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-
-  <!-- Feather Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
-
-  <!-- tsParticles -->
   <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine"></script>
   <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
-
-  <!-- LZ‑String for compression -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
-
-  <!-- Dark overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
-  <!-- tsParticles canvas -->
   <div id="tsparticles" class="absolute inset-0 z-0"></div>
   <script>
-    tsParticles.load('tsparticles', {
-      fullScreen: { enable: true, zIndex: 0 },
-      particles: { number: { value: 60 }, color: { value: '#38BDF8' }, opacity: { value: 0.25 }, size: { value: { min: 1, max: 4 } }, move: { enable: true, speed: 0.6, outModes: 'out' } }
-    });
+    tsParticles.load('tsparticles',{ fullScreen:{enable:true,zIndex:0},particles:{number:{value:60},color:{value:'#38BDF8'},opacity:{value:0.25},size:{value:{min:1,max:4}},move:{enable:true,speed:0.6,outModes:'out'}} });
   </script>
 
-  <!-- Card -->
   <div class="relative w-full max-w-lg z-10">
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
-    <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/20 border border-white/25 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
-      <!-- Header -->
-      <div class="bg-gradient-to-r from-green-500 to-blue-600 p-6 flex items-center justify-center gap-3">
+    <div data-aos="fade-in" class="relative bg-white/20 border border-white/25 rounded-3xl shadow-2xl backdrop-blur-md animate-fadeIn">
+      <div class="bg-gradient-to-r from-green-500 to-blue-600 p-6 flex items-center justify-center gap-3 rounded-t-3xl">
         <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
-        <h1 class="text-3xl font-bold text-white text-center">Anonymous Noise Complaint</h1>
+        <h1 class="text-3xl font-bold text-white">Anonymous Noise Complaint</h1>
       </div>
-      <!-- Body -->
       <div class="p-6 space-y-6">
-        <!-- Explanation -->
-        <p id="explanation" class="text-center text-gray-100 mb-4">
+        <p id="explanation" class="text-center text-gray-100">
           Can’t sleep, study, or enjoy your home because of noisy neighbors?<br/>
           Create a complaint in seconds, copy the link, and send it to the noise-maker using the sharing options below.<br/>
         </p>
-        <!-- Form -->
         <div id="formSection" class="space-y-4">
-          <form id="complaintForm">
-            <div class="relative">
-              <select id="tone" class="w-full p-4 pr-12 bg-white/90 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
-                <option value="" disabled selected>Select tone</option>
-                <option value="polite">Polite</option>
-                <option value="neutral">Neutral</option>
-                <option value="aggressive">Aggressive</option>
-              </select>
-              <i data-feather="sliders" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-            </div>
-            <button type="button" id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
-              Preview Complaint
-            </button>
-          </form>
+          <div class="relative">
+            <select id="tone" class="w-full p-4 pr-12 bg-white/90 border border-gray-300 rounded-lg focus:ring-indigo-400" required>
+              <option disabled selected>Select tone</option>
+              <option value="polite">Polite</option>
+              <option value="neutral">Neutral</option>
+              <option value="aggressive">Aggressive</option>
+            </select>
+            <i data-feather="sliders" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+          </div>
+          <button id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 active:scale-95 transition">
+            Preview Complaint
+          </button>
         </div>
-        <!-- Preview -->
-        <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/80 backdrop-blur-md text-center">
-          <h2 class="text-xl font-semibold text-gray-800 mb-3">Preview:</h2>
-          <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
+        <div id="previewBox" class="hidden p-6 bg-white/80 border-2 border-dashed border-gray-300 rounded-2xl text-center backdrop-blur-md">
+          <h2 class="text-xl font-semibold mb-3">Preview:</h2>
+          <p id="previewText" class="italic whitespace-pre-line"></p>
         </div>
-        <!-- Link & Copy -->
         <div id="linkSection" class="hidden space-y-4">
-          <div class="flex items-center justify-between bg-white/90 backdrop-blur-sm p-4 rounded-lg border border-gray-200">
+          <div class="flex items-center justify-between bg-white/90 p-4 rounded-lg shadow-inner border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
-            <button id="copyBtn" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm"><i data-feather="copy" class="w-5 h-5"></i> Copy</button>
-            <button id="shareBtn" class="flex items-center gap-2 text-green-600 hover:text-green-800 text-sm"><i data-feather="share-2" class="w-5 h-5"></i> Share</button>
+            <div class="flex gap-3">
+              <button id="copyBtn" class="px-3 py-1 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Copy</button>
+              <button id="shareBtn" class="px-3 py-1 bg-green-600 text-white rounded-md shadow hover:bg-green-700">Share</button>
+            </div>
           </div>
         </div>
-        <!-- Pro CTA -->
         <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
-          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">🚀 Upgrade to Pro</a>
+          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300">🚀 Upgrade to Pro</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Share Sheet -->
-  <div id="shareSheet" class="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-md rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 z-20 overflow-auto" style="max-height:65vh;">
-    <!-- Handle -->
+  <div id="shareSheet" class="fixed inset-x-4 bottom-4 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl transform translate-y-full transition-transform duration-300 z-20 overflow-auto" style="max-height:60vh;">
     <div class="flex justify-center mt-2">
       <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
     </div>
-    <div class="flex justify-between items-center p-4">
+    <div class="flex justify-between items-center px-6 py-4">
       <h3 class="text-lg font-semibold">Share Complaint</h3>
-      <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-5 h-5"></i></button>
+      <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-6 h-6"></i></button>
     </div>
-    <div class="grid grid-cols-4 gap-6 p-6 text-center">
-      <!-- Modern realistic icons via feather + color backgrounds -->
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-6 px-6 pb-6 text-center">
       <button id="whatsapp" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-green-500 rounded-lg flex items-center justify-center shadow-md"><i data-feather="message-square" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">WhatsApp</span>
+        <img src="https://cdn.simpleicons.org/whatsapp/fff?size=48" class="w-12 h-12 p-2 bg-green-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">WhatsApp</span>
       </button>
       <button id="viber" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="phone" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">Viber</span>
+        <img src="https://cdn.simpleicons.org/viber/fff?size=48" class="w-12 h-12 p-2 bg-purple-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">Viber</span>
       </button>
       <button id="telegram" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-blue-400 rounded-lg flex items-center justify-center shadow-md"><i data-feather="send" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">Telegram</span>
+        <img src="https://cdn.simpleicons.org/telegram/fff?size=48" class="w-12 h-12 p-2 bg-blue-400 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">Telegram</span>
       </button>
       <button id="sms" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-gray-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="message-circle" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">SMS</span>
+        <img src="https://cdn.simpleicons.org/androidmessages/fff?size=48" class="w-12 h-12 p-2 bg-gray-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">SMS</span>
       </button>
       <button id="email" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="mail" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">Email</span>
+        <img src="https://cdn.simpleicons.org/maildotru/fff?size=48" class="w-12 h-12 p-2 bg-red-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">Email</span>
       </button>
       <button id="facebook" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-blue-700 rounded-lg flex items-center justify-center shadow-md"><i data-feather="facebook" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">Facebook</span>
+        <img src="https://cdn.simpleicons.org/facebook/fff?size=48" class="w-12 h-12 p-2 bg-blue-700 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">Facebook</span>
       </button>
       <button id="x" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-black rounded-lg flex items-center justify-center shadow-md"><i data-feather="x" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">X</span>
+        <img src="https://cdn.simpleicons.org/x/fff?size=48" class="w-12 h-12 p-2 bg-black rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">X</span>
       </button>
       <button id="linkedin" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-blue-600 rounded-lg flex items-center justify-center shadow-md"><i data-feather="linkedin" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">LinkedIn</span>
+        <img src="https://cdn.simpleicons.org/linkedin/fff?size=48" class="w-12 h-12 p-2 bg-blue-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">LinkedIn</span>
       </button>
       <button id="mailru" class="flex flex-col items-center">
-        <div class="w-14 h-14 bg-yellow-500 rounded-lg flex items-center justify-center shadow-md"><i data-feather="mail" class="w-7 h-7 text-white"></i></div>
-        <span class="mt-2 text-sm font-medium">Mail.ru</span>
+        <img src="https://cdn.simpleicons.org/maildotru/fff?size=48" class="w-12 h-12 p-2 bg-yellow-500 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm">Mail.ru</span>
       </button>
     </div>
   </div>
 
-  <!-- JS Logic -->
   <script>
-    feather.replace();
-    AOS.init({ duration: 800, once: true });
-
+    feather.replace(); AOS.init({ duration:800, once:true });
     const previewBtn = document.getElementById('previewBtn');
-    const previewBox = document.getElementById('previewBox');
-    const previewText = document.getElementById('previewText');
     const toneEl = document.getElementById('tone');
     const formSection = document.getElementById('formSection');
     const proCTA = document.getElementById('proCTA');
@@ -177,51 +138,27 @@
     const shareBtn = document.getElementById('shareBtn');
     const shareSheet = document.getElementById('shareSheet');
     const closeShare = document.getElementById('closeShare');
-
+    const previewBox = document.getElementById('previewBox');
+    const previewText = document.getElementById('previewText');
     function isPreviewOnly() { return window.location.hash.includes('c='); }
-
-    window.addEventListener('load', () => {
-      if (isPreviewOnly()) {
-        formSection.classList.add('hidden');
-        proCTA.classList.add('hidden');
-        document.getElementById('explanation').classList.add('hidden');
-        const match = window.location.hash.match(/c=(.*)$/);
-        const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
-        previewText.textContent = decoded;
-        previewBox.classList.remove('hidden');
-      }
+    window.addEventListener('load', ()=>{
+      if(isPreviewOnly()){ formSection.classList.add('hidden'); proCTA.classList.add('hidden'); document.getElementById('explanation').classList.add('hidden');
+        const match=window.location.hash.match(/c=(.*)$/); const decoded=LZString.decompressFromEncodedURIComponent(match[1]); previewText.textContent=decoded; previewBox.classList.remove('hidden'); }
     });
-
-    previewBtn.addEventListener('click', () => {
-      const tone = toneEl.value; if (!tone) { alert('Please select a tone.'); return; }
-      let complaint;
-      if (tone === 'polite') complaint = `Dear neighbor, please keep the noise down. Thanks.`;
-      else if (tone === 'neutral') complaint = `Hello, there has been excessive noise lately. Please address it.`;
-      else complaint = `Attention! The constant noise is unacceptable. Stop now!`;
-      previewText.textContent = complaint; previewBox.classList.remove('hidden'); linkSection.classList.remove('hidden'); linkText.textContent = 'Loading…';
-      const compressed = LZString.compressToEncodedURIComponent(complaint);
-      const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
+    previewBtn.addEventListener('click', ()=>{
+      const tone = toneEl.value; if(!tone){ alert('Please select a tone.'); return; }
+      let complaint = tone==='polite'?`Dear neighbor, please keep the noise down. Thanks.`:tone==='neutral'?`Hello, there has been excessive noise lately. Please address it.`:`Attention! The constant noise is unacceptable. Stop now!`;
+      previewText.textContent=complaint; previewBox.classList.remove('hidden'); linkSection.classList.remove('hidden'); linkText.textContent='Loading…';
+      const compressed=LZString.compressToEncodedURIComponent(complaint);
+      const longUrl=`${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
-        .then(r => r.text()).then(shortUrl => linkText.textContent = shortUrl)
-        .catch(() => linkText.textContent = longUrl);
+        .then(r=>r.text()).then(url=>linkText.textContent=url).catch(()=>linkText.textContent=longUrl);
     });
-
-    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(linkText.textContent).then(() => { shareSheet.classList.remove('translate-y-full'); }); });
-    shareBtn.addEventListener('click', () => shareSheet.classList.remove('translate-y-full'));
-    closeShare.addEventListener('click', () => shareSheet.classList.add('translate-y-full'));
-
-    const actions = {
-      whatsapp: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      viber: () => window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`),
-      telegram: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      sms: () => window.location.href = `sms:?body=${encodeURIComponent(linkText.textContent)}`,
-      email: () => window.location.href = `mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`,
-      facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      x: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      linkedin: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
-      mailru: () => window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`, '_blank')
-    };
-    Object.keys(actions).forEach(id => document.getElementById(id).addEventListener('click', actions[id]));
+    copyBtn.addEventListener('click',()=>{ navigator.clipboard.writeText(linkText.textContent).then(()=>shareSheet.classList.remove('translate-y-full')); });
+    shareBtn.addEventListener('click',()=>shareSheet.classList.remove('translate-y-full'));
+    closeShare.addEventListener('click',()=>shareSheet.classList.add('translate-y-full'));
+    const actions={ whatsapp:()=>window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`), viber:()=>window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`), telegram:()=>window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`), sms:()=>window.location.href=`sms:?body=${encodeURIComponent(linkText.textContent)}`, email:()=>window.location.href=`mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`, facebook:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`), x:()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`), linkedin:()=>window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkText.textContent)}`), mailru:()=>window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`) };
+    Object.keys(actions).forEach(id=>document.getElementById(id).addEventListener('click',actions[id]));
   </script>
 </body>
 </html>
