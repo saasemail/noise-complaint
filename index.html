@@ -33,10 +33,10 @@
   <!-- LZ-String for compression -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
-<body class="bg-gradient-to-tr from-blue-100 via-sky-100 to-blue-200 min-h-screen flex items-center justify-center p-6">
+<body class="bg-gradient-to-tr from-blue-100 via-sky-100 to-blue-200 min-h-screen flex items-center justify-center p-6 overflow-hidden">
 
   <!-- Card -->
-  <div class="relative w-full max-w-lg backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
+  <div class="relative w-full max-w-lg backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl animate-fadeIn">
     <!-- Header -->
     <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3 rounded-t-3xl">
       <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
@@ -70,17 +70,18 @@
         <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
         <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
       </div>
-      <!-- Link Generation -->
+      <!-- Link & Share -->
       <div id="linkSection" class="hidden space-y-4">
-        <button id="generateLinkBtn"
-          class="w-full py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold rounded-xl shadow hover:scale-[1.02] active:scale-[0.98] focus:ring-4 focus:ring-green-300 transition">
-          Generate Anonymous Link
-        </button>
         <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
-          <span id="linkText" class="text-sm text-gray-800 break-all">Link will appear here</span>
-          <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
-            <i data-feather="copy" class="w-4 h-4"></i> Copy
-          </button>
+          <span id="linkText" class="text-sm text-gray-800 break-all"><em>Your link will appear here</em></span>
+          <div class="flex items-center gap-2">
+            <button id="copyBtn" class="flex items-center px-3 py-1 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 text-sm">
+              <i data-feather="copy" class="w-4 h-4 mr-1"></i> Copy
+            </button>
+            <button id="shareBtn" class="flex items-center px-3 py-1 bg-green-600 text-white rounded-md shadow hover:bg-green-700 text-sm">
+              <i data-feather="share-2" class="w-4 h-4 mr-1"></i> Share
+            </button>
+          </div>
         </div>
       </div>
       <!-- Pro Link -->
@@ -89,6 +90,27 @@
           Upgrade to Pro (full customization)
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- Share Sheet -->
+  <div id="shareSheet" class="fixed inset-x-4 bottom-4 bg-white/90 backdrop-blur-md rounded-3xl shadow-xl transform translate-y-full transition-transform duration-300 z-20 overflow-auto" style="max-height:60vh;">
+    <div class="flex justify-center mt-2"><div class="w-12 h-1.5 bg-gray-300 rounded-full"></div></div>
+    <div class="flex justify-between items-center p-4">
+      <h3 class="text-lg font-semibold">Share Complaint</h3>
+      <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-6 h-6"></i></button>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-6 p-6 text-center">
+      <button id="instagram" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/instagram/ffffff" class="w-12 h-12 p-2 bg-pink-500 rounded-lg shadow"><span class="mt-2 text-sm">Instagram</span></button>
+      <button id="facebook" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/facebook/ffffff" class="w-12 h-12 p-2 bg-blue-700 rounded-lg shadow"><span class="mt-2 text-sm">Facebook</span></button>
+      <button id="x" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/x/ffffff" class="w-12 h-12 p-2 bg-black rounded-lg shadow"><span class="mt-2 text-sm">X</span></button>
+      <button id="viber" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/viber/ffffff" class="w-12 h-12 p-2 bg-purple-600 rounded-lg shadow"><span class="mt-2 text-sm">Viber</span></button>
+      <button id="whatsapp" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" class="w-12 h-12 p-2 bg-green-600 rounded-lg shadow"><span class="mt-2 text-sm">WhatsApp</span></button>
+      <button id="tiktok" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/tiktok/ffffff" class="w-12 h-12 p-2 bg-black rounded-lg shadow"><span class="mt-2 text-sm">TikTok</span></button>
+      <button id="telegram" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/telegram/ffffff" class="w-12 h-12 p-2 bg-blue-400 rounded-lg shadow"><span class="mt-2 text-sm">Telegram</span></button>
+      <button id="sms" class="flex flex-col items-center"><div class="w-12 h-12 p-2 bg-gray-600 rounded-lg flex items-center justify-center shadow"><i data-feather="message-circle" class="w-6 h-6 text-white"></i></div><span class="mt-2 text-sm">SMS</span></button>
+      <button id="email" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/gmail/ffffff" class="w-12 h-12 p-2 bg-red-600 rounded-lg shadow"><span class="mt-2 text-sm">Email</span></button>
+      <button id="copyQR" class="flex flex-col items-center"><i data-feather="refresh-cw" class="w-6 h-6 p-2 bg-indigo-500 text-white rounded-lg shadow"></i><span class="mt-2 text-sm">Regenerate</span></button>
     </div>
   </div>
 
@@ -102,26 +124,25 @@
     const linkSection = document.getElementById('linkSection');
     const linkText = document.getElementById('linkText');
     const copyBtn = document.getElementById('copyBtn');
+    const shareBtn = document.getElementById('shareBtn');
     const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const shareSheet = document.getElementById('shareSheet');
+    const closeShare = document.getElementById('closeShare');
+
     let generatedComplaint = '';
 
     previewBtn.addEventListener('click', () => {
-      const tone = toneEl.value;
-      if (!tone) { alert('Please select a tone.'); return; }
-      if (tone === 'polite') {
-        generatedComplaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down.\n\nThank you.`;
-      } else if (tone === 'neutral') {
-        generatedComplaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
-      } else {
-        generatedComplaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
-      }
+      const tone = toneEl.value; if (!tone) { alert('Please select a tone.'); return; }
+      if (tone === 'polite') generatedComplaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down.\n\nThank you.`;
+      else if (tone === 'neutral') generatedComplaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
+      else generatedComplaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+
       previewText.textContent = generatedComplaint;
       previewBox.classList.remove('hidden');
       linkSection.classList.remove('hidden');
       previewBox.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Inline compressed link generation
     generateLinkBtn.addEventListener('click', () => {
       const compressed = LZString.compressToEncodedURIComponent(generatedComplaint);
       const url = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
@@ -129,17 +150,28 @@
     });
 
     copyBtn.addEventListener('click', () => {
-      const text = linkText.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const original = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i data-feather="check" class="w-4 h-4"></i> Copied';
+      navigator.clipboard.writeText(linkText.textContent).then(() => {
+        copyBtn.innerHTML = '<i data-feather="check" class="w-4 h-4 mr-1"></i>Copied';
         feather.replace();
-        setTimeout(() => {
-          copyBtn.innerHTML = original;
-          feather.replace();
-        }, 1500);
+        shareSheet.classList.remove('translate-y-full');
       });
     });
+
+    shareBtn.addEventListener('click', () => shareSheet.classList.remove('translate-y-full'));
+    closeShare.addEventListener('click', () => shareSheet.classList.add('translate-y-full'));
+
+    const shareActions = {
+      instagram: () => window.open(`https://www.instagram.com`, '_blank'),
+      facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      x: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      viber: () => window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`),
+      whatsapp: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      tiktok: () => window.open(`https://www.tiktok.com`, '_blank'),
+      telegram: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      sms: () => window.location.href = `sms:?body=${encodeURIComponent(linkText.textContent)}`,
+      email: () => window.location.href = `mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`
+    };
+    Object.keys(shareActions).forEach(id => document.getElementById(id).addEventListener('click', shareActions[id]));
   </script>
 </body>
 </html>
