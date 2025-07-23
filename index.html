@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -87,13 +87,29 @@ v<!DOCTYPE html>
       <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-6 h-6"></i></button>
     </div>
     <div class="grid grid-cols-3 sm:grid-cols-4 gap-6 px-6 pb-6 text-center">
-      <button id="whatsapp" class="flex flex-col items-center">
-        <img src="https://cdn.simpleicons.org/whatsapp/ffffff" class="w-14 h-14 p-2 bg-green-600 rounded-xl shadow-md"/>
-        <span class="mt-2 text-sm font-medium">WhatsApp</span>
+      <button id="instagram" class="flex flex-col items-center">
+        <img src="https://cdn.simpleicons.org/instagram/ffffff" class="w-14 h-14 p-2 bg-pink-500 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm font-medium">Instagram</span>
+      </button>
+      <button id="facebook" class="flex flex-col items-center">
+        <img src="https://cdn.simpleicons.org/facebook/ffffff" class="w-14 h-14 p-2 bg-blue-700 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm font-medium">Facebook</span>
+      </button>
+      <button id="x" class="flex flex-col items-center">
+        <img src="https://cdn.simpleicons.org/x/ffffff" class="w-14 h-14 p-2 bg-black rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm font-medium">X</span>
       </button>
       <button id="viber" class="flex flex-col items-center">
         <img src="https://cdn.simpleicons.org/viber/ffffff" class="w-14 h-14 p-2 bg-purple-600 rounded-xl shadow-md"/>
         <span class="mt-2 text-sm font-medium">Viber</span>
+      </button>
+      <button id="whatsapp" class="flex flex-col items-center">
+        <img src="https://cdn.simpleicons.org/whatsapp/ffffff" class="w-14 h-14 p-2 bg-green-600 rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm font-medium">WhatsApp</span>
+      </button>
+      <button id="tiktok" class="flex flex-col items-center">
+        <img src="https://cdn.simpleicons.org/tiktok/ffffff" class="w-14 h-14 p-2 bg-black rounded-xl shadow-md"/>
+        <span class="mt-2 text-sm font-medium">TikTok</span>
       </button>
       <button id="telegram" class="flex flex-col items-center">
         <img src="https://cdn.simpleicons.org/telegram/ffffff" class="w-14 h-14 p-2 bg-blue-400 rounded-xl shadow-md"/>
@@ -107,40 +123,6 @@ v<!DOCTYPE html>
         <img src="https://cdn.simpleicons.org/gmail/ffffff" class="w-14 h-14 p-2 bg-red-600 rounded-xl shadow-md"/>
         <span class="mt-2 text-sm font-medium">Email</span>
       </button>
-      <button id="facebook" class="flex flex-col items-center">
-        <img src="https://cdn.simpleicons.org/facebook/ffffff" class="w-14 h-14 p-2 bg-blue-700 rounded-xl shadow-md"/>
-        <span class="mt-2 text-sm font-medium">Facebook</span>
-      </button>
-      <button id="x" class="flex flex-col items-center">
-        <img src="https://cdn.simpleicons.org/x/ffffff" class="w-14 h-14 p-2 bg-black rounded-xl shadow-md"/>
-        <span class="mt-2 text-sm font-medium">X</span>
-      </button>
-      <button id="linkedin" class="flex flex-col items-center">
-        <img src="https://cdn.simpleicons.org/linkedin/ffffff" class="w-14 h-14 p-2 bg-blue-600 rounded-xl shadow-md"/>
-        <span class="mt-2 text-sm font-medium">LinkedIn</span>
-      </button>
       <button id="mailru" class="flex flex-col items-center">
         <img src="https://cdn.simpleicons.org/maildotru/ffffff" class="w-14 h-14 p-2 bg-yellow-500 rounded-xl shadow-md"/>
         <span class="mt-2 text-sm font-medium">Mail.ru</span>
-      </button>
-    </div>
-  </div>
-
-  <script>
-    feather.replace(); AOS.init({ duration:800, once:true });
-    const previewBtn=document.getElementById('previewBtn'); const toneEl=document.getElementById('tone');
-    const formSection=document.getElementById('formSection'); const proCTA=document.getElementById('proCTA');
-    const linkSection=document.getElementById('linkSection'); const linkText=document.getElementById('linkText');
-    const copyBtn=document.getElementById('copyBtn'); const shareBtn=document.getElementById('shareBtn');
-    const shareSheet=document.getElementById('shareSheet'); const closeShare=document.getElementById('closeShare');
-    const previewBox=document.getElementById('previewBox'); const previewText=document.getElementById('previewText');
-    function isPreviewOnly(){return window.location.hash.includes('c=');}
-    window.addEventListener('load',()=>{if(isPreviewOnly()){formSection.classList.add('hidden');proCTA.classList.add('hidden');document.getElementById('explanation').classList.add('hidden');
-        const match=window.location.hash.match(/c=(.*)$/);const decoded=LZString.decompressFromEncodedURIComponent(match[1]);previewText.textContent=decoded;previewBox.classList.remove('hidden');}});
-    previewBtn.addEventListener('click',()=>{const tone=toneEl.value;if(!tone){alert('Please select a tone.');return;}let complaint=tone==='polite'?`Dear neighbor, please keep the noise down. Thanks.`:tone==='neutral'?`Hello, there has been excessive noise lately. Please address it.`:`Attention! The constant noise is unacceptable. Stop now!`;previewText.textContent=complaint;previewBox.classList.remove('hidden');linkSection.classList.remove('hidden');linkText.textContent='Loading…';const compressed=LZString.compressToEncodedURIComponent(complaint);const longUrl=`${window.location.origin}${window.location.pathname}#c=${compressed}`;fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`).then(r=>r.text()).then(url=>linkText.textContent=url).catch(()=>linkText.textContent=longUrl);});
-    copyBtn.addEventListener('click',()=>{navigator.clipboard.writeText(linkText.textContent).then(()=>shareSheet.classList.remove('translate-y-full'));}); shareBtn.addEventListener('click',()=>shareSheet.classList.remove('translate-y-full')); closeShare.addEventListener('click',()=>shareSheet.classList.add('translate-y-full'));
-    const actions={whatsapp:()=>window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`),viber:()=>window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`),telegram:()=>window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`),sms:()=>window.location.href=`sms:?body=${encodeURIComponent(linkText.textContent)}`,email:()=>window.location.href=`mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`,facebook:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`),x:()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`),linkedin:()=>window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkText.textContent)}`),mailru:()=>window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`)};
-    Object.keys(actions).forEach(id=>document.getElementById(id).addEventListener('click',actions[id]));
-  </script>
-</body>
-</html>
