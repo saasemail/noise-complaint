@@ -28,9 +28,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style> body { font-family: 'Poppins', sans-serif; } </style>
 
-  <!-- Feather Icons -->
+  <!-- Feather Icons & LZ-String -->
   <script src="https://unpkg.com/feather-icons"></script>
-  <!-- LZ-String for compression -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="bg-gradient-to-tr from-blue-100 via-sky-100 to-blue-200 min-h-screen flex items-center justify-center p-6 overflow-hidden">
@@ -47,10 +46,10 @@
       <!-- Explanation -->
       <p class="text-center text-gray-700 mb-4">
         Can’t sleep, study, or enjoy your home because of noisy neighbors?<br/>
-        Create a complaint in seconds, copy the link, and send it to the noise-maker using the sharing options below.
+        Create a complaint in seconds, generate an anonymous link, and send it using the sharing options below.
       </p>
       <!-- Form -->
-      <form id="complaintForm" class="space-y-4">
+      <div id="formSection" class="space-y-4">
         <div class="relative">
           <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition">
             <option value="" disabled selected>Select tone</option>
@@ -60,18 +59,20 @@
           </select>
           <i data-feather="sliders" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
         </div>
-        <button type="button" id="previewBtn"
-          class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
+        <button type="button" id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
           Preview Complaint
         </button>
-      </form>
+      </div>
       <!-- Preview -->
       <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
         <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
         <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
       </div>
-      <!-- Link & Share -->
+      <!-- Link Generation & Share -->
       <div id="linkSection" class="hidden space-y-4">
+        <button type="button" id="generateLinkBtn" class="w-full py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-300 transition">
+          Generate Anonymous Link
+        </button>
         <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
           <span id="linkText" class="text-sm text-gray-800 break-all"><em>Your link will appear here</em></span>
           <div class="flex items-center gap-2">
@@ -110,7 +111,6 @@
       <button id="telegram" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/telegram/ffffff" class="w-12 h-12 p-2 bg-blue-400 rounded-lg shadow"><span class="mt-2 text-sm">Telegram</span></button>
       <button id="sms" class="flex flex-col items-center"><div class="w-12 h-12 p-2 bg-gray-600 rounded-lg flex items-center justify-center shadow"><i data-feather="message-circle" class="w-6 h-6 text-white"></i></div><span class="mt-2 text-sm">SMS</span></button>
       <button id="email" class="flex flex-col items-center"><img src="https://cdn.simpleicons.org/gmail/ffffff" class="w-12 h-12 p-2 bg-red-600 rounded-lg shadow"><span class="mt-2 text-sm">Email</span></button>
-      <button id="copyQR" class="flex flex-col items-center"><i data-feather="refresh-cw" class="w-6 h-6 p-2 bg-indigo-500 text-white rounded-lg shadow"></i><span class="mt-2 text-sm">Regenerate</span></button>
     </div>
   </div>
 
@@ -118,29 +118,29 @@
     feather.replace();
 
     const previewBtn = document.getElementById('previewBtn');
-    const previewBox = document.getElementById('previewBox');
-    const previewText = document.getElementById('previewText');
-    const toneEl = document.getElementById('tone');
-    const linkSection = document.getElementById('linkSection');
-    const linkText = document.getElementById('linkText');
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
     const copyBtn = document.getElementById('copyBtn');
     const shareBtn = document.getElementById('shareBtn');
-    const generateLinkBtn = document.getElementById('generateLinkBtn');
-    const shareSheet = document.getElementById('shareSheet');
     const closeShare = document.getElementById('closeShare');
+    const shareSheet = document.getElementById('shareSheet');
+    const toneEl = document.getElementById('tone');
+    const previewBox = document.getElementById('previewBox');
+    const previewText = document.getElementById('previewText');
+    const linkSection = document.getElementById('linkSection');
+    const linkText = document.getElementById('linkText');
 
     let generatedComplaint = '';
 
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value; if (!tone) { alert('Please select a tone.'); return; }
-      if (tone === 'polite') generatedComplaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down.\n\nThank you.`;
-      else if (tone === 'neutral') generatedComplaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
-      else generatedComplaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
-
+      generatedComplaint = tone === 'polite'
+        ? `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down.\n\nThank you.`
+        : tone === 'neutral'
+          ? `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`
+          : `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
       previewText.textContent = generatedComplaint;
       previewBox.classList.remove('hidden');
       linkSection.classList.remove('hidden');
-      previewBox.scrollIntoView({ behavior: 'smooth' });
     });
 
     generateLinkBtn.addEventListener('click', () => {
