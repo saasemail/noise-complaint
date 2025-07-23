@@ -45,42 +45,31 @@
 <body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
   <!-- Dark overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
-
   <!-- tsParticles canvas -->
   <div id="tsparticles" class="absolute inset-0 z-0"></div>
   <script>
     tsParticles.load("tsparticles", {
       fullScreen: { enable: true, zIndex: 0 },
-      particles: {
-        number: { value: 60 },
-        color: { value: "#38BDF8" },
-        opacity: { value: 0.25 },
-        size: { value: { min: 1, max: 4 } },
-        move: { enable: true, speed: 0.6, outModes: "out" }
-      }
+      particles: { number: { value: 60 }, color: { value: "#38BDF8" }, opacity: { value: 0.25 }, size: { value: { min: 1, max: 4 } }, move: { enable: true, speed: 0.6, outModes: "out" } }
     });
   </script>
 
   <!-- Card Container -->
   <div class="relative w-full max-w-lg z-10">
-    <!-- Azure circle -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
-
     <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
       <!-- Header -->
       <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
         <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
         <h1 class="text-3xl font-bold text-white text-center">Anonymous Noise Complaint</h1>
       </div>
-
       <!-- Body -->
       <div class="p-6 space-y-6">
         <!-- Explanation -->
         <p id="explanation" class="text-center text-gray-100 mb-4">
           Can’t sleep, study, or enjoy your home because of noisy neighbors?<br/>
-          Create a complaint in seconds, copy the generated link, and send it to the noise-maker using the sharing options.<br/>
+          Create a complaint in seconds, copy the generated link, and send it using the sharing options below.<br/>
         </p>
-
         <!-- Form Section -->
         <div id="formSection" class="space-y-4">
           <form id="complaintForm">
@@ -96,29 +85,40 @@
             <button type="button" id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">Preview Complaint</button>
           </form>
         </div>
-
         <!-- Preview -->
         <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md text-center">
           <h2 class="text-xl font-semibold text-gray-800 mb-3">Preview:</h2>
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
         </div>
-
         <!-- Link & Copy -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
-            <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
-              <i data-feather="copy" class="w-4 h-4"></i> Copy
-            </button>
+            <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm"><i data-feather="copy" class="w-4 h-4"></i> Copy</button>
+            <button id="shareBtn" class="flex items-center gap-1 text-green-600 hover:underline text-sm"><i data-feather="share-2" class="w-4 h-4"></i> Share</button>
           </div>
         </div>
-
         <!-- Pro CTA -->
-        <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
-          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">🚀 Upgrade to Pro (full customization)</a>
-        </div>
-
+        <div id="proCTA" class="pt-6 text-center border-t border-gray-200"><a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">🚀 Upgrade to Pro (full customization)</a></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Share Bottom Sheet -->
+  <div id="shareSheet" class="fixed inset-x-0 bottom-0 h-1/2 bg-white/90 backdrop-blur-md rounded-t-3xl shadow-xl transform translate-y-full transition-transform duration-300 z-20">
+    <div class="flex justify-between items-center p-4">
+      <h3 class="text-lg font-semibold">Share Complaint</h3>
+      <button id="closeShare" class="text-gray-600 hover:text-gray-800"><i data-feather="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="grid grid-cols-4 gap-6 p-4 text-center">
+      <button id="whatsapp" class="flex flex-col items-center"><i data-feather="message-square" class="w-6 h-6 text-green-500"></i><span class="mt-2 text-sm">WhatsApp</span></button>
+      <button id="viber" class="flex flex-col items-center"><i data-feather="phone" class="w-6 h-6 text-purple-700"></i><span class="mt-2 text-sm">Viber</span></button>
+      <button id="telegram" class="flex flex-col items-center"><i data-feather="send" class="w-6 h-6 text-blue-400"></i><span class="mt-2 text-sm">Telegram</span></button>
+      <button id="sms" class="flex flex-col items-center"><i data-feather="message-circle" class="w-6 h-6 text-gray-600"></i><span class="mt-2 text-sm">SMS</span></button>
+      <button id="email" class="flex flex-col items-center"><i data-feather="mail" class="w-6 h-6 text-red-500"></i><span class="mt-2 text-sm">Email</span></button>
+      <button id="facebook" class="flex flex-col items-center"><i data-feather="facebook" class="w-6 h-6 text-blue-700"></i><span class="mt-2 text-sm">Facebook</span></button>
+      <button id="twitter" class="flex flex-col items-center"><i data-feather="twitter" class="w-6 h-6 text-blue-500"></i><span class="mt-2 text-sm">Twitter</span></button>
+      <button id="linkedin" class="flex flex-col items-center"><i data-feather="linkedin" class="w-6 h-6 text-blue-600"></i><span class="mt-2 text-sm">LinkedIn</span></button>
     </div>
   </div>
 
@@ -136,17 +136,17 @@
     const linkSection = document.getElementById('linkSection');
     const linkText    = document.getElementById('linkText');
     const copyBtn     = document.getElementById('copyBtn');
-    const explanation = document.getElementById('explanation');
+    const shareBtn    = document.getElementById('shareBtn');
+    const shareSheet  = document.getElementById('shareSheet');
+    const closeShare  = document.getElementById('closeShare');
 
     function isPreviewOnly() { return window.location.hash.includes('c='); }
 
-    // On load: preview‑only hides form, CTA & explanation, but keeps linkSection hidden
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
         formSection.classList.add('hidden');
         proCTA.classList.add('hidden');
-        explanation.classList.add('hidden');
-
+        document.getElementById('explanation').classList.add('hidden');
         const match = window.location.hash.match(/c=(.*)$/);
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
@@ -154,40 +154,43 @@
       }
     });
 
-    // Preview + generate short link
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value;
       if (!tone) { alert('Please select a tone.'); return; }
-
       let complaint;
-      if (tone === 'polite') {
-        complaint = `Dear neighbor, please keep the noise down. Thanks.`;
-      } else if (tone === 'neutral') {
-        complaint = `Hello, there has been excessive noise lately. Please address it.`;
-      } else {
-        complaint = `Attention! The constant noise is unacceptable. Stop now!`;
-      }
-
+      if (tone === 'polite') complaint = `Dear neighbor, please keep the noise down. Thanks.`;
+      else if (tone === 'neutral') complaint = `Hello, there has been excessive noise lately. Please address it.`;
+      else complaint = `Attention! The constant noise is unacceptable. Stop now!`;
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
-
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
-
       const compressed = LZString.compressToEncodedURIComponent(complaint);
       const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
-        .then(r => r.text())
-        .then(shortUrl => linkText.textContent = shortUrl)
+        .then(r => r.text()).then(shortUrl => linkText.textContent = shortUrl)
         .catch(() => linkText.textContent = longUrl);
     });
 
-    // Copy handler
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(linkText.textContent).then(() => {
-        alert('Link copied to clipboard!');
+        shareSheet.classList.remove('translate-y-full');
       });
     });
+    shareBtn.addEventListener('click', () => shareSheet.classList.remove('translate-y-full'));
+    closeShare.addEventListener('click', () => shareSheet.classList.add('translate-y-full'));
+
+    const actions = {
+      whatsapp: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      viber: () => window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`),
+      telegram: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      sms: () => window.location.href = `sms:?body=${encodeURIComponent(linkText.textContent)}`,
+      email: () => window.location.href = `mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`,
+      facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      twitter: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      linkedin: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(linkText.textContent)}`, '_blank')
+    };
+    Object.keys(actions).forEach(id => document.getElementById(id).addEventListener('click', actions[id]));
   </script>
 </body>
 </html>
