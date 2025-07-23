@@ -24,7 +24,7 @@
     }
   </script>
 
-  <!-- Poppins font -->
+  <!-- Google Font: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style> body { font-family: 'Poppins', sans-serif; } </style>
 
@@ -66,13 +66,13 @@
   <!-- Card Container -->
   <div class="relative w-full max-w-lg z-10">
 
-    <!-- Azurni krug iza kartice -->
+    <!-- Azure circle -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
-    <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
+    <div id="card" data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
 
       <!-- Header -->
-      <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
+      <div id="header" class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
         <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
         <h1 class="text-3xl font-bold text-white text-center">Anonymous Noise Complaint</h1>
       </div>
@@ -87,22 +87,24 @@
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Tone Selector -->
-        <form id="complaintForm" class="space-y-4">
-          <div class="relative">
-            <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
-              <option value="" disabled selected>Select tone</option>
-              <option value="polite">Polite</option>
-              <option value="neutral">Neutral</option>
-              <option value="aggressive">Aggressive</option>
-            </select>
-            <i data-feather="sliders" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-          </div>
-          <button type="button" id="previewBtn"
-            class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
-            Preview Complaint
-          </button>
-        </form>
+        <!-- Form Section -->
+        <div id="formSection" class="space-y-4">
+          <form id="complaintForm" class="space-y-4">
+            <div class="relative">
+              <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
+                <option value="" disabled selected>Select tone</option>
+                <option value="polite">Polite</option>
+                <option value="neutral">Neutral</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+              <i data-feather="sliders" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+            </div>
+            <button type="button" id="previewBtn"
+              class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
+              Preview Complaint
+            </button>
+          </form>
+        </div>
 
         <!-- Preview Section -->
         <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
@@ -110,7 +112,7 @@
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Share Section -->
+        <!-- Link & Share (hidden in preview-only mode) -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
@@ -120,8 +122,8 @@
           </div>
         </div>
 
-        <!-- Pro Version CTA -->
-        <div class="pt-6 text-center border-t border-gray-200">
+        <!-- Pro CTA (hidden in preview-only mode) -->
+        <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
           <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">
             🚀 Upgrade to Pro (full customization)
           </a>
@@ -135,24 +137,47 @@
     feather.replace();
     AOS.init({ duration: 800, once: true });
 
-    // Elements
     const previewBtn  = document.getElementById('previewBtn');
     const previewBox  = document.getElementById('previewBox');
     const previewText = document.getElementById('previewText');
     const toneEl      = document.getElementById('tone');
+    const formSection = document.getElementById('formSection');
     const linkSection = document.getElementById('linkSection');
+    const proCTA      = document.getElementById('proCTA');
     const linkText    = document.getElementById('linkText');
     const copyBtn     = document.getElementById('copyBtn');
 
-    // Preview + Auto-generate short link
+    // Check if URL has compressed complaint
+    function isPreviewOnly() {
+      return window.location.hash.includes('c=');
+    }
+
+    // On page load
+    window.addEventListener('load', () => {
+      if (isPreviewOnly()) {
+        // Preview-only mode: hide form, link & CTA until we set preview
+        formSection.style.display = 'none';
+        linkSection.style.display  = 'none';
+        proCTA.style.display       = 'none';
+        // Decompress and show
+        const match   = window.location.hash.match(/c=(.*)$/);
+        const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
+        previewText.textContent = decoded;
+        previewBox.classList.remove('hidden');
+      }
+    });
+
+    // Preview + auto-generate short link
     previewBtn.addEventListener('click', () => {
+      // If in preview-only, do nothing
+      if (isPreviewOnly()) return;
+
       const tone = toneEl.value;
       if (!tone) {
         alert('Please select a tone.');
         return;
       }
-
-      // Generate anonymous complaint text
+      // Generate text
       let complaint = '';
       if (tone === 'polite') {
         complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
@@ -161,49 +186,28 @@
       } else {
         complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
       }
-
       // Show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Show link section & set loading text
-      linkText.textContent = 'Loading…';
+      // Show linkSection
       linkSection.classList.remove('hidden');
+      linkText.textContent = 'Loading…';
 
-      // Build full URL with compressed fragment
+      // Build and shorten
       const compressed = LZString.compressToEncodedURIComponent(complaint);
-      const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
-
-      // Call TinyURL API to shorten
+      const longUrl    = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
-        .then(res => res.text())
-        .then(shortUrl => {
-          linkText.textContent = shortUrl;
-        })
-        .catch(() => {
-          linkText.textContent = longUrl; // fallback
-        });
-
-      previewBox.scrollIntoView({ behavior: 'smooth' });
+        .then(r => r.text())
+        .then(shortUrl => linkText.textContent = shortUrl)
+        .catch(() => linkText.textContent = longUrl);
     });
 
-    // Copy link to clipboard
+    // Copy link
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(linkText.textContent).then(() => {
         alert('Link copied to clipboard!');
       });
-    });
-
-    // On page load, if there's a complaint in the hash
-    window.addEventListener('load', () => {
-      const match = window.location.hash.match(/c=(.*)$/);
-      if (match) {
-        const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
-        previewText.textContent = decoded;
-        previewBox.classList.remove('hidden');
-        linkText.textContent = window.location.href;
-        linkSection.classList.remove('hidden');
-      }
     });
   </script>
 </body>
