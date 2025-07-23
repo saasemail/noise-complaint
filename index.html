@@ -30,13 +30,15 @@
 
   <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
+  <!-- LZ-String for compression -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body class="bg-gradient-to-tr from-blue-100 via-sky-100 to-blue-200 min-h-screen flex items-center justify-center p-6">
 
   <!-- Card -->
   <div class="relative w-full max-w-lg backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
+    <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3 rounded-t-3xl">
       <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
       <h1 class="text-3xl font-bold text-white text-center w-full">Anonymous Noise Complaint</h1>
     </div>
@@ -75,7 +77,7 @@
           Generate Anonymous Link
         </button>
         <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
-          <span id="linkText" class="text-sm text-gray-800 truncate">Link will appear here</span>
+          <span id="linkText" class="text-sm text-gray-800 break-all">Link will appear here</span>
           <button id="copyBtn" class="flex items-center gap-1 text-blue-600 hover:underline text-sm">
             <i data-feather="copy" class="w-4 h-4"></i> Copy
           </button>
@@ -119,22 +121,11 @@
       previewBox.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Use 0x0.st for anonymous link
-    generateLinkBtn.addEventListener('click', async () => {
-      linkText.textContent = 'Generating...';
-      try {
-        const formData = new FormData();
-        formData.append('file', new Blob([generatedComplaint], { type: 'text/plain' }), 'complaint.txt');
-        const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
-        const url = await res.text();
-        if (res.ok && url.startsWith('http')) {
-          linkText.textContent = url.trim();
-        } else {
-          linkText.textContent = 'Failed to generate link';
-        }
-      } catch (e) {
-        linkText.textContent = 'Error generating link';
-      }
+    // Inline compressed link generation
+    generateLinkBtn.addEventListener('click', () => {
+      const compressed = LZString.compressToEncodedURIComponent(generatedComplaint);
+      const url = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
+      linkText.textContent = url;
     });
 
     copyBtn.addEventListener('click', () => {
