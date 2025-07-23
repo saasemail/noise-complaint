@@ -42,9 +42,7 @@
   <!-- LZ‑String for compression -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
-<body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden
-               bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
-
+<body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
   <!-- Dark overlay -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
 
@@ -65,12 +63,10 @@
 
   <!-- Card Container -->
   <div class="relative w-full max-w-lg z-10">
-
     <!-- Azure circle -->
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
 
     <div data-aos="fade-in" class="relative backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
-
       <!-- Header -->
       <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
         <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
@@ -79,12 +75,10 @@
 
       <!-- Body -->
       <div class="p-6 space-y-6">
-
         <!-- Explanation -->
         <p id="explanation" class="text-center text-gray-100 mb-4">
-          Create and share an anonymous noise complaint in seconds.<br/>
-          Select a tone and preview your message—no names or addresses needed.<br/>
-          Upgrade to Pro for full customization.
+          Ne možete da spavate, učite ili uživate u svom domu zbog bučnih komšija?<br/>
+          Napravite anonimnu žalbu, kopirajte generisani link i pošaljite ga onome ko pravi buku putem opcija za deljenje.<br/>
         </p>
 
         <!-- Form Section -->
@@ -99,10 +93,7 @@
               </select>
               <i data-feather="sliders" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
             </div>
-            <button type="button" id="previewBtn"
-              class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
-              Preview Complaint
-            </button>
+            <button type="button" id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">Preview Complaint</button>
           </form>
         </div>
 
@@ -124,9 +115,7 @@
 
         <!-- Pro CTA -->
         <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
-          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">
-            🚀 Upgrade to Pro (full customization)
-          </a>
+          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">🚀 Upgrade to Pro (full customization)</a>
         </div>
 
       </div>
@@ -149,9 +138,7 @@
     const copyBtn     = document.getElementById('copyBtn');
     const explanation = document.getElementById('explanation');
 
-    function isPreviewOnly() {
-      return window.location.hash.includes('c=');
-    }
+    function isPreviewOnly() { return window.location.hash.includes('c='); }
 
     // On load: preview‑only hides form, CTA & explanation, but keeps linkSection hidden
     window.addEventListener('load', () => {
@@ -170,10 +157,7 @@
     // Preview + generate short link
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value;
-      if (!tone) {
-        alert('Please select a tone.');
-        return;
-      }
+      if (!tone) { alert('Please select a tone.'); return; }
 
       let complaint;
       if (tone === 'polite') {
