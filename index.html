@@ -35,22 +35,18 @@
 
   <!-- Card -->
   <div class="relative w-full max-w-lg backdrop-blur-xs bg-white/30 border border-white/20 rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
-
     <!-- Header -->
     <div class="bg-gradient-to-r from-green-400 to-blue-500 p-6 flex items-center justify-center gap-3">
       <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
       <h1 class="text-3xl font-bold text-white text-center w-full">Anonymous Noise Complaint</h1>
     </div>
-
     <!-- Body -->
     <div class="p-6 space-y-6">
-
       <!-- Explanation -->
       <p class="text-center text-gray-700 mb-4">
         Can’t sleep, study, or enjoy your home because of noisy neighbors?<br/>
         Create a complaint in seconds, copy the link, and send it to the noise-maker using the sharing options below.
       </p>
-
       <!-- Form -->
       <form id="complaintForm" class="space-y-4">
         <div class="relative">
@@ -67,13 +63,11 @@
           Preview Complaint
         </button>
       </form>
-
       <!-- Preview -->
       <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
         <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
         <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
       </div>
-
       <!-- Link Generation -->
       <div id="linkSection" class="hidden space-y-4">
         <button id="generateLinkBtn"
@@ -87,7 +81,6 @@
           </button>
         </div>
       </div>
-
       <!-- Pro Link -->
       <div class="pt-6 text-center border-t border-gray-200">
         <a href="/pro" class="text-sm text-indigo-600 hover:text-indigo-800 underline">
@@ -108,15 +101,11 @@
     const linkText = document.getElementById('linkText');
     const copyBtn = document.getElementById('copyBtn');
     const generateLinkBtn = document.getElementById('generateLinkBtn');
-
     let generatedComplaint = '';
 
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value;
-      if (!tone) {
-        alert('Please select a tone.');
-        return;
-      }
+      if (!tone) { alert('Please select a tone.'); return; }
       if (tone === 'polite') {
         generatedComplaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down.\n\nThank you.`;
       } else if (tone === 'neutral') {
@@ -130,16 +119,16 @@
       previewBox.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Use Hastebin API for anonymous link
+    // Use 0x0.st for anonymous link
     generateLinkBtn.addEventListener('click', async () => {
+      linkText.textContent = 'Generating...';
       try {
-        const response = await fetch('https://hasteb.in/documents', {
-          method: 'POST',
-          body: generatedComplaint
-        });
-        const data = await response.json();
-        if (data.key) {
-          linkText.textContent = `https://hasteb.in/${data.key}`;
+        const formData = new FormData();
+        formData.append('file', new Blob([generatedComplaint], { type: 'text/plain' }), 'complaint.txt');
+        const res = await fetch('https://0x0.st', { method: 'POST', body: formData });
+        const url = await res.text();
+        if (res.ok && url.startsWith('http')) {
+          linkText.textContent = url.trim();
         } else {
           linkText.textContent = 'Failed to generate link';
         }
