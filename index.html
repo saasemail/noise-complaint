@@ -112,7 +112,7 @@
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Share (hidden in preview-only mode) -->
+        <!-- Link & Share Section -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <!-- Pro CTA (hidden in preview-only mode) -->
+        <!-- Pro CTA -->
         <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
           <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300 underline">
             🚀 Upgrade to Pro (full customization)
@@ -155,11 +155,10 @@
     // On page load
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
-        // Preview-only mode: hide form, link & CTA until we set preview
         formSection.style.display = 'none';
-        linkSection.style.display  = 'none';
-        proCTA.style.display       = 'none';
-        // Decompress and show
+        proCTA.style.display      = 'none';
+
+        // Decompress and show preview only
         const match   = window.location.hash.match(/c=(.*)$/);
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
@@ -169,7 +168,6 @@
 
     // Preview + auto-generate short link
     previewBtn.addEventListener('click', () => {
-      // If in preview-only, do nothing
       if (isPreviewOnly()) return;
 
       const tone = toneEl.value;
@@ -177,7 +175,6 @@
         alert('Please select a tone.');
         return;
       }
-      // Generate text
       let complaint = '';
       if (tone === 'polite') {
         complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
@@ -186,11 +183,13 @@
       } else {
         complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
       }
+
       // Show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Show linkSection
+      // Show & reset linkSection
+      linkSection.style.display = '';
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
