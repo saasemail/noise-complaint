@@ -87,7 +87,7 @@
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Form Section -->
+        <!-- Form -->
         <div id="formSection" class="space-y-4">
           <form id="complaintForm">
             <div class="relative">
@@ -106,13 +106,13 @@
           </form>
         </div>
 
-        <!-- Preview Section -->
+        <!-- Preview -->
         <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
           <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Copy -->
+        <!-- Link & Copy (hidden in preview-only load) -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
@@ -132,7 +132,7 @@
     </div>
   </div>
 
-  <!-- JavaScript Logic -->
+  <!-- JS Logic -->
   <script>
     feather.replace();
     AOS.init({ duration: 800, once: true });
@@ -151,7 +151,7 @@
       return window.location.hash.includes('c=');
     }
 
-    // On load: preview‑only hides form & CTA but keeps linkSection hidden until preview
+    // On load: preview-only hides form & CTA, but keeps linkSection hidden
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
         formSection.classList.add('hidden');
@@ -161,8 +161,7 @@
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
         previewBox.classList.remove('hidden');
-        linkSection.classList.remove('hidden');
-        linkText.textContent = window.location.href;
+        // do NOT reveal linkSection here
       }
     });
 
@@ -174,22 +173,25 @@
         return;
       }
 
-      let complaint = '';
+      // Shorter polite message
+      let complaint;
       if (tone === 'polite') {
-        complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
+        complaint = `Dear neighbor, please keep the noise down. Thanks.`;
       } else if (tone === 'neutral') {
-        complaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
+        complaint = `Hello, there has been excessive noise lately. Please address it.`;
       } else {
-        complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+        complaint = `Attention! The constant noise is unacceptable. Stop now!`;
       }
 
+      // Show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Always show and reset linkSection
+      // Reveal and reset linkSection
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
+      // Compress + shorten via TinyURL
       const compressed = LZString.compressToEncodedURIComponent(complaint);
       const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
