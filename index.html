@@ -81,13 +81,13 @@
       <div class="p-6 space-y-6">
 
         <!-- Explanation -->
-        <p class="text-center text-gray-100 mb-4">
+        <p id="explanation" class="text-center text-gray-100 mb-4">
           Create and share an anonymous noise complaint in seconds.<br/>
           Select a tone and preview your message—no names or addresses needed.<br/>
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Form -->
+        <!-- Form Section -->
         <div id="formSection" class="space-y-4">
           <form id="complaintForm">
             <div class="relative">
@@ -112,7 +112,7 @@
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
         </div>
 
-        <!-- Link & Copy (hidden in preview-only load) -->
+        <!-- Link & Copy -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-gray-200">
             <span id="linkText" class="text-sm text-gray-800 break-all">Loading…</span>
@@ -128,6 +128,7 @@
             🚀 Upgrade to Pro (full customization)
           </a>
         </div>
+
       </div>
     </div>
   </div>
@@ -146,22 +147,24 @@
     const linkSection = document.getElementById('linkSection');
     const linkText    = document.getElementById('linkText');
     const copyBtn     = document.getElementById('copyBtn');
+    const explanation = document.getElementById('explanation');
 
     function isPreviewOnly() {
       return window.location.hash.includes('c=');
     }
 
-    // On load: preview-only hides form & CTA, but keeps linkSection hidden
+    // On load: preview‑only hides form, CTA & explanation, but keeps linkSection hidden
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
         formSection.classList.add('hidden');
         proCTA.classList.add('hidden');
+        explanation.classList.add('hidden');
 
         const match = window.location.hash.match(/c=(.*)$/);
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
         previewBox.classList.remove('hidden');
-        // do NOT reveal linkSection here
+        // linkSection remains hidden until sender clicks
       }
     });
 
@@ -187,7 +190,7 @@
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Reveal and reset linkSection
+      // Reveal linkSection and reset
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
