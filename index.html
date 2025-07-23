@@ -87,9 +87,9 @@
           Upgrade to Pro for full customization.
         </p>
 
-        <!-- Form -->
+        <!-- Form Section -->
         <div id="formSection" class="space-y-4">
-          <form id="complaintForm" class="space-y-4">
+          <form id="complaintForm">
             <div class="relative">
               <select id="tone" class="w-full p-4 pr-12 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" required>
                 <option value="" disabled selected>Select tone</option>
@@ -106,7 +106,7 @@
           </form>
         </div>
 
-        <!-- Preview -->
+        <!-- Preview Section -->
         <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
           <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
           <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
@@ -132,7 +132,7 @@
     </div>
   </div>
 
-  <!-- JS Logic -->
+  <!-- JavaScript Logic -->
   <script>
     feather.replace();
     AOS.init({ duration: 800, once: true });
@@ -147,12 +147,11 @@
     const linkText    = document.getElementById('linkText');
     const copyBtn     = document.getElementById('copyBtn');
 
-    // Check if URL has compressed complaint
     function isPreviewOnly() {
       return window.location.hash.includes('c=');
     }
 
-    // On page load: preview-only behavior
+    // On load: preview‑only hides form & CTA but keeps linkSection hidden until preview
     window.addEventListener('load', () => {
       if (isPreviewOnly()) {
         formSection.classList.add('hidden');
@@ -169,30 +168,28 @@
 
     // Preview + auto‑generate short link
     previewBtn.addEventListener('click', () => {
-      if (isPreviewOnly()) return;
-
       const tone = toneEl.value;
       if (!tone) {
         alert('Please select a tone.');
         return;
       }
 
-      // build complaint
-      let complaint = tone === 'polite'
-        ? `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`
-        : tone === 'neutral'
-          ? `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`
-          : `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+      let complaint = '';
+      if (tone === 'polite') {
+        complaint = `Dear neighbor,\n\nThis is a friendly reminder to keep the noise down in our building.\n\nThank you for understanding.`;
+      } else if (tone === 'neutral') {
+        complaint = `Hello,\n\nThere has been excessive noise lately. Please address this issue promptly.`;
+      } else {
+        complaint = `Attention!\n\nThe constant noise is unacceptable. Stop immediately!`;
+      }
 
-      // show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // show link section
+      // Always show and reset linkSection
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
-      // compress + shorten
       const compressed = LZString.compressToEncodedURIComponent(complaint);
       const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
@@ -201,7 +198,7 @@
         .catch(() => linkText.textContent = longUrl);
     });
 
-    // copy handler
+    // Copy handler
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(linkText.textContent).then(() => {
         alert('Link copied to clipboard!');
