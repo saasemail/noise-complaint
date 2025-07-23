@@ -107,9 +107,9 @@
         </div>
 
         <!-- Preview -->
-        <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md">
-          <h2 class="text-xl font-semibold text-gray-800 mb-3 text-center">Preview:</h2>
-          <p id="previewText" class="text-gray-900 italic whitespace-pre-line"></p>
+        <div id="previewBox" class="hidden p-6 border-2 border-dashed border-gray-300 rounded-2xl bg-white/70 backdrop-blur-md text-center">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Preview:</h2>
+          <p id="previewText" class="text-gray-900 italic whitespace-pre-line text-center"></p>
         </div>
 
         <!-- Link & Copy -->
@@ -164,11 +164,10 @@
         const decoded = LZString.decompressFromEncodedURIComponent(match[1]);
         previewText.textContent = decoded;
         previewBox.classList.remove('hidden');
-        // linkSection remains hidden until sender clicks
       }
     });
 
-    // Preview + auto‑generate short link
+    // Preview + generate short link
     previewBtn.addEventListener('click', () => {
       const tone = toneEl.value;
       if (!tone) {
@@ -176,7 +175,6 @@
         return;
       }
 
-      // Shorter polite message
       let complaint;
       if (tone === 'polite') {
         complaint = `Dear neighbor, please keep the noise down. Thanks.`;
@@ -186,15 +184,12 @@
         complaint = `Attention! The constant noise is unacceptable. Stop now!`;
       }
 
-      // Show preview
       previewText.textContent = complaint;
       previewBox.classList.remove('hidden');
 
-      // Reveal linkSection and reset
       linkSection.classList.remove('hidden');
       linkText.textContent = 'Loading…';
 
-      // Compress + shorten via TinyURL
       const compressed = LZString.compressToEncodedURIComponent(complaint);
       const longUrl = `${window.location.origin}${window.location.pathname}#c=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
