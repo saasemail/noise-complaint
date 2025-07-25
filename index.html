@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anonymous Noise Complaint</title>
+  <title>Noise Complaint</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -43,16 +43,15 @@
     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-sky-400 opacity-40 rounded-full blur-3xl"></div>
     <div data-aos="fade-in" class="relative bg-white/20 border border-white/25 rounded-3xl shadow-2xl backdrop-blur-md animate-fadeIn">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-green-500 to-blue-600 p-6 flex items-center justify-center gap-3 rounded-t-3xl">
-        <i data-feather="eye-off" class="w-6 h-6 text-white"></i>
-        <h1 class="w-full text-center text-3xl font-bold text-white">Anonymous Noise Complaint</h1>
+      <div class="bg-gradient-to-r from-green-500 to-blue-600 p-6 flex items-center justify-center rounded-t-3xl">
+        <h1 class="w-full text-center text-3xl font-bold text-white">Noise Complaint</h1>
       </div>
       <!-- Body -->
       <div class="p-6 space-y-6">
         <!-- Explanation -->
         <p id="explanation" class="text-center text-gray-100">
           Can’t sleep, study, or enjoy your home because of noisy neighbors?<br/>
-          Create a complaint in seconds, copy the link, and send it to the noise-maker using the sharing options below.<br/>
+          Create a complaint in seconds, copy the link, and send it to the noise-maker WITH NO DRAMA using the sharing options below.<br/>
         </p>
         <!-- Tone selector -->
         <div id="formSection" class="space-y-4">
@@ -84,10 +83,7 @@
             </div>
           </div>
         </div>
-        <!-- Pro CTA -->
-        <div id="proCTA" class="pt-6 text-center border-t border-gray-200">
-          <a href="/pro" class="text-sm text-indigo-100 hover:text-indigo-300">Upgrade to Pro (full customization)</a>
-        </div>
+        <!-- Removed Pro CTA -->
       </div>
     </div>
   </div>
@@ -116,12 +112,64 @@
   <!-- JS -->
   <script>
     feather.replace(); AOS.init({ duration:800, once:true });
-    const previewBtn=document.getElementById('previewBtn'), toneEl=document.getElementById('tone'), formSection=document.getElementById('formSection'), proCTA=document.getElementById('proCTA'), linkSection=document.getElementById('linkSection'), linkText=document.getElementById('linkText'), copyBtn=document.getElementById('copyBtn'), shareBtn=document.getElementById('shareBtn'), shareSheet=document.getElementById('shareSheet'), closeShare=document.getElementById('closeShare'), previewBox=document.getElementById('previewBox'), previewText=document.getElementById('previewText');
+    const previewBtn=document.getElementById('previewBtn'),
+          toneEl=document.getElementById('tone'),
+          formSection=document.getElementById('formSection'),
+          linkSection=document.getElementById('linkSection'),
+          linkText=document.getElementById('linkText'),
+          copyBtn=document.getElementById('copyBtn'),
+          shareBtn=document.getElementById('shareBtn'),
+          shareSheet=document.getElementById('shareSheet'),
+          closeShare=document.getElementById('closeShare'),
+          previewBox=document.getElementById('previewBox'),
+          previewText=document.getElementById('previewText');
+
     function isPreviewOnly(){return window.location.hash.includes('c=');}
-    window.addEventListener('load',()=>{if(isPreviewOnly()){formSection.classList.add('hidden');proCTA.classList.add('hidden');document.getElementById('explanation').classList.add('hidden'); const match=window.location.hash.match(/c=(.*)$/); const decoded=LZString.decompressFromEncodedURIComponent(match[1]); previewText.textContent=decoded; previewBox.classList.remove('hidden'); }});
-    previewBtn.addEventListener('click',()=>{ const tone=toneEl.value; if(!tone){alert('Please select a tone.');return;} let complaint = tone==='polite'?`Dear neighbor, please keep the noise down. Thanks.`: tone==='neutral'?`Hello, there has been excessive noise lately. Please address it.`:`Attention! The constant noise is unacceptable. Stop now!`; previewText.textContent=complaint; previewBox.classList.remove('hidden'); linkSection.classList.remove('hidden'); linkText.textContent='Loading…'; const compressed=LZString.compressToEncodedURIComponent(complaint); const longUrl=`${window.location.origin}${window.location.pathname}#c=${compressed}`; fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`) .then(r=>r.text()).then(url=>linkText.textContent=url).catch(()=>linkText.textContent=longUrl); });
-    copyBtn.addEventListener('click',()=>{ navigator.clipboard.writeText(linkText.textContent).then(()=>shareSheet.classList.remove('translate-y-full')); }); shareBtn.addEventListener('click',()=>shareSheet.classList.remove('translate-y-full')); closeShare.addEventListener('click',()=>shareSheet.classList.add('translate-y-full'));
-    const actions={ whatsapp:()=>window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`), viber:()=>window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`), telegram:()=>window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`), sms:()=>window.location.href=`sms:?body=${encodeURIComponent(linkText.textContent)}`, email:()=>window.location.href=`mailto:?subject=Anonymous Noise Complaint&body=${encodeURIComponent(linkText.textContent)}` , facebook:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`), x:()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`), instagram:()=>window.open(`https://www.instagram.com/?url=${encodeURIComponent(linkText.textContent)}`, '_blank'), mailru:()=>window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`) };
+    window.addEventListener('load',()=>{
+      if(isPreviewOnly()){
+        formSection.classList.add('hidden');
+        document.getElementById('explanation').classList.add('hidden');
+        const match=window.location.hash.match(/c=(.*)$/);
+        const decoded=LZString.decompressFromEncodedURIComponent(match[1]);
+        previewText.textContent=decoded;
+        previewBox.classList.remove('hidden');
+      }
+    });
+
+    previewBtn.addEventListener('click',()=>{
+      const tone=toneEl.value;
+      if(!tone){alert('Please select a tone.');return;}
+      let complaint = tone==='polite'?
+        `Dear neighbor, please keep the noise down. Thanks.`:
+        tone==='neutral'?
+        `Hello, there has been excessive noise lately. Please address it.`:
+        `Attention! The constant noise is unacceptable. Stop now!`;
+      previewText.textContent=complaint;
+      previewBox.classList.remove('hidden');
+      linkSection.classList.remove('hidden');
+      linkText.textContent='Loading…';
+      const compressed=LZString.compressToEncodedURIComponent(complaint);
+      const longUrl=`${window.location.origin}${window.location.pathname}#c=${compressed}`;
+      fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
+        .then(r=>r.text()).then(url=>linkText.textContent=url)
+        .catch(()=>linkText.textContent=longUrl);
+    });
+
+    copyBtn.addEventListener('click',()=>{navigator.clipboard.writeText(linkText.textContent).then(()=>shareSheet.classList.remove('translate-y-full'));});
+    shareBtn.addEventListener('click',()=>shareSheet.classList.remove('translate-y-full'));
+    closeShare.addEventListener('click',()=>shareSheet.classList.add('translate-y-full'));
+
+    const actions={
+      whatsapp:()=>window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(linkText.textContent)}`),
+      viber:()=>window.open(`viber://forward?text=${encodeURIComponent(linkText.textContent)}`),
+      telegram:()=>window.open(`https://t.me/share/url?url=${encodeURIComponent(linkText.textContent)}`),
+      sms:()=>window.location.href=`sms:?body=${encodeURIComponent(linkText.textContent)}`,
+      email:()=>window.location.href=`mailto:?subject=Noise Complaint&body=${encodeURIComponent(linkText.textContent)}`,
+      facebook:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(linkText.textContent)}`),
+      x:()=>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(linkText.textContent)}`),
+      instagram:()=>window.open(`https://www.instagram.com/?url=${encodeURIComponent(linkText.textContent)}`, '_blank'),
+      mailru:()=>window.open(`https://connect.mail.ru/share?share_url=${encodeURIComponent(linkText.textContent)}`)
+    };
     Object.keys(actions).forEach(id=>document.getElementById(id).addEventListener('click',actions[id]));
   </script>
 </body>
