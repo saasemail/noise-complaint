@@ -3,16 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Noise Complaint</n  ></title>
+  <title>Noise Complaint</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { theme: { extend: {
-      backdropBlur: { xs: '2px' },
-      animation: { fadeIn: 'fadeIn 0.8s ease-out' },
-      keyframes: { fadeIn: { '0%': { opacity:0, transform:'translateY(10px)' }, '100%': { opacity:1, transform:'translateY(0)' } } }
-    } }}
+    tailwind.config = {
+      theme: {
+        extend: {
+          backdropBlur: { xs: '2px' },
+          animation: { fadeIn: 'fadeIn 0.8s ease-out' },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity:0, transform:'translateY(10px)' },
+              '100%': { opacity:1, transform:'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
   </script>
 
   <!-- Fonts & Icons -->
@@ -64,14 +73,22 @@
             </select>
             <i data-feather="sliders" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
           </div>
+          <!-- Dugme za pregled žalbe -->
           <button id="previewBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 active:scale-95 transition">
             Preview Complaint
           </button>
+
+          <!-- NOVO: Dugme za Pro verziju -->
+          <a href="pro.html" class="w-full block text-center py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg shadow-md transition">
+            Send discreet complaint (Pro)
+          </a>
         </div>
+
         <!-- Preview -->
         <div id="previewBox" class="hidden p-6 bg-white/80 border-2 border-dashed border-gray-300 rounded-2xl text-center backdrop-blur-md">
           <p id="previewText" class="italic whitespace-pre-line"></p>
         </div>
+
         <!-- Link & share buttons -->
         <div id="linkSection" class="hidden space-y-4">
           <div class="flex items-center justify-between bg-white/90 p-4 rounded-lg shadow-inner border border-gray-200">
@@ -120,4 +137,3 @@
   </script>
 </body>
 </html>
-
