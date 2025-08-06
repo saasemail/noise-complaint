@@ -32,7 +32,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
-<body class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
+<body class="relative min-h-screen flex items-center justify-center p-6 overflow-y-auto bg-[url('undraw_starry-window_l1jg.svg')] bg-center bg-contain bg-no-repeat">
   <!-- Dark overlay and particles -->
   <div class="absolute inset-0 bg-black/30 z-0"></div>
   <div id="tsparticles" class="absolute inset-0 z-0"></div>
@@ -183,7 +183,11 @@
       const payload = { alias: alias, avatar: selectedAvatar, message: msg };
       const json = JSON.stringify(payload);
       const compressed = LZString.compressToEncodedURIComponent(json);
-      const longUrl = `${window.location.origin}${window.location.pathname.replace('pro.html','index.html')}#p=${compressed}`;
+      // Build URL relative to current directory so it works even if the file is served from different paths
+      const parts = window.location.pathname.split('/');
+      parts.pop(); // remove current file name
+      const basePath = parts.join('/') + '/';
+      const longUrl = `${window.location.origin}${basePath}index.html#p=${compressed}`;
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`)
         .then(r => r.text())
         .then(url => linkText.textContent = url)
